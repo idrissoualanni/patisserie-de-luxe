@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pâtisserie de Luxe | Entremets aux saveurs du Sénégal, Dakar</title>
+<meta name="description" content="Pâtisserie de Luxe, Dakar : entremets multi-saveurs (bouye, madd, sapotille, sidem, papaye), parts individuelles et gâteaux d'anniversaire personnalisés. Commande au 70 713 70 70, retrait au pas de porte.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Brun doré et crème du logo ; accents repris des parts (mangue, pistache, papaye, fraise) */
+    --gold: #8c6b3e;
+    --gold-light: #b9935a;
+    --cocoa: #2c1f16;
+    --cocoa-soft: #45321f;
+    --cream: #f7f0e4;
+    --cream-light: #fcf8f1;
+    --ink: #2c1f16;
+    --muted: #75685a;
+    --line: #e7dccb;
+    --mango: #f2b705;
+    --pistache: #6f9a2d;
+    --papaye: #ee7a1f;
+    --fraise: #e8728c;
+    --wa: #25d366;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: "Inter", system-ui, sans-serif; color: var(--ink); background: var(--cream-light); line-height: 1.65; overflow-x: hidden; }
+  h1, h2, h3 { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; line-height: 1.05; }
+  a { color: inherit; }
+  main { overflow-x: clip; } /* les éléments qui glissent depuis la droite ne créent pas de défilement horizontal */
+  img { display: block; max-width: 100%; }
+  .wrap { width: min(1180px, 100% - 32px); margin-inline: auto; }
+  section { padding: 104px 0; scroll-margin-top: 70px; position: relative; }
+  .eyebrow { text-transform: uppercase; letter-spacing: .24em; font-size: .72rem; font-weight: 600; color: var(--gold); }
+  .title { font-size: clamp(2.4rem, 5vw, 3.8rem); margin: 12px 0 18px; }
+  .title em { font-style: italic; font-weight: 500; color: var(--gold); white-space: nowrap; }
+  .lead { color: var(--muted); max-width: 600px; font-size: 1.05rem; }
+
+  .demo-bar { background: var(--cocoa); color: #e4d7c3; text-align: center; font-size: .78rem; padding: 6px 16px; }
+
+  header { position: sticky; top: 0; z-index: 50; background: rgba(252,248,241,.92); backdrop-filter: blur(12px); border-bottom: 1px solid transparent; transition: border-color .3s, box-shadow .3s; }
+  header.scrolled { border-color: var(--line); box-shadow: 0 8px 30px rgba(44,31,22,.07); }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 76px; }
+  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .brand img { width: 46px; height: 46px; border-radius: 10px; }
+  .brand b { display: block; font-family: "Cormorant Garamond", serif; font-size: 1.5rem; line-height: 1; letter-spacing: .02em; }
+  .brand small { font-size: .62rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+  .nav ul { display: flex; gap: 30px; list-style: none; }
+  .nav ul a { text-decoration: none; font-size: .92rem; font-weight: 500; position: relative; }
+  .nav ul a::after { content: ""; position: absolute; left: 0; bottom: -5px; width: 100%; height: 1px; background: var(--gold); transform: scaleX(0); transform-origin: right; transition: transform .35s; }
+  .nav ul a:hover::after { transform: scaleX(1); transform-origin: left; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; padding: 14px 28px; border-radius: 999px; font-weight: 600; font-size: .92rem; text-decoration: none; border: 0; cursor: pointer; transition: transform .25s, box-shadow .25s, background .25s; }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(44,31,22,.22); }
+  .btn-cocoa { background: var(--cocoa); color: var(--cream); }
+  .btn-gold { background: var(--gold); color: #fff; }
+  .btn-line { border: 1px solid var(--cocoa); color: var(--cocoa); background: transparent; }
+  .btn-cream { background: var(--cream); color: var(--cocoa); }
+  .btn-wa { background: var(--wa); color: #fff; }
+  .menu-toggle { display: none; background: none; border: 1px solid var(--cocoa); color: var(--cocoa); border-radius: 999px; padding: 7px 16px; font: 600 .8rem "Inter", sans-serif; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; }
+
+  /* Hero */
+  .hero { padding: 48px 0 100px; overflow: hidden; }
+  .hero-grid { display: grid; grid-template-columns: 1fr .95fr; gap: 64px; align-items: center; }
+  .hero h1 { font-size: clamp(3rem, 7vw, 5.8rem); }
+  .hero h1 .line { display: block; overflow: hidden; padding-bottom: .06em; }
+  .hero h1 .line span { display: inline-block; transform: translateY(110%); animation: rise 1s cubic-bezier(.2,.7,.2,1) forwards; }
+  .hero h1 .line:nth-child(2) span { animation-delay: .14s; }
+  .hero h1 .line:nth-child(3) span { animation-delay: .28s; }
+  .hero h1 em { font-style: italic; font-weight: 500; color: var(--gold); }
+  @keyframes rise { to { transform: none; } }
+  .hero p { color: var(--muted); font-size: 1.1rem; max-width: 500px; margin: 24px 0 34px; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .stats { display: flex; gap: 36px; margin-top: 42px; flex-wrap: wrap; }
+  .stats b { display: block; font-family: "Cormorant Garamond", serif; font-size: 2.4rem; line-height: 1; color: var(--cocoa); }
+  .stats span { font-size: .82rem; color: var(--muted); }
+
+  .hero-visual { position: relative; justify-self: center; width: min(470px, 100%); aspect-ratio: 1; }
+  .wheel { position: absolute; inset: -6%; border-radius: 50%; background: conic-gradient(var(--mango) 0 45deg, var(--papaye) 45deg 90deg, var(--fraise) 90deg 135deg, var(--cocoa-soft) 135deg 180deg, var(--pistache) 180deg 225deg, #f3e6cf 225deg 270deg, var(--gold-light) 270deg 315deg, #f7d77a 315deg 360deg); opacity: .22; animation: spin 50s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .plate { position: absolute; inset: 4%; border-radius: 50%; overflow: hidden; border: 10px solid #fff; box-shadow: 0 40px 80px rgba(44,31,22,.28); clip-path: circle(0% at 50% 50%); animation: open 1.4s .2s cubic-bezier(.7,0,.2,1) forwards; }
+  .plate img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.18) rotate(-6deg); animation: settle 2.6s .2s cubic-bezier(.2,.7,.2,1) forwards; }
+  @keyframes open { to { clip-path: circle(75% at 50% 50%); } }
+  @keyframes settle { to { transform: none; } }
+  .tag { position: absolute; z-index: 2; background: #fff; border-radius: 16px; padding: 12px 18px; box-shadow: 0 18px 40px rgba(44,31,22,.16); font-size: .82rem; animation: bob 6s ease-in-out infinite; }
+  .tag b { display: block; font-family: "Cormorant Garamond", serif; font-size: 1.25rem; }
+  .tag.t1 { left: -34px; bottom: 54px; }
+  .tag.t2 { right: -20px; top: 30px; animation-delay: -3s; }
+  @keyframes bob { 50% { transform: translateY(-10px); } }
+
+  .anim { opacity: 0; transform: translateY(22px); animation: fadeUp .9s cubic-bezier(.2,.7,.2,1) forwards; }
+  .a1 { animation-delay: .1s; } .a3 { animation-delay: .5s; } .a4 { animation-delay: .65s; } .a5 { animation-delay: .8s; }
+  @keyframes fadeUp { to { opacity: 1; transform: none; } }
+
+  .ribbon { background: var(--cocoa); color: var(--cream); overflow: hidden; white-space: nowrap; padding: 18px 0; }
+  .ribbon-track { display: inline-flex; animation: scroll 34s linear infinite; }
+  .ribbon span { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1.5rem; padding: 0 26px; }
+  .ribbon span::after { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--gold-light); margin-left: 52px; vertical-align: middle; }
+  @keyframes scroll { to { transform: translateX(-50%); } }
+
+  /* Saveurs */
+  .flavors { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; margin-top: 40px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; margin: 26px 0 24px; }
+  .chip { display: inline-flex; align-items: center; gap: 9px; padding: 10px 18px; border-radius: 999px; border: 1px solid var(--line); background: #fff; font: 600 .9rem "Inter", sans-serif; cursor: pointer; color: var(--ink); transition: transform .25s, border-color .25s, background .25s; }
+  .chip i { width: 12px; height: 12px; border-radius: 50%; background: var(--c); }
+  .chip:hover { transform: translateY(-2px); }
+  .chip.on { border-color: var(--cocoa); background: var(--cream); }
+  .flavor-card { border-left: 3px solid var(--c, var(--gold)); padding: 6px 0 6px 20px; min-height: 120px; transition: border-color .4s; }
+  .flavor-card h3 { font-size: 2.2rem; }
+  .flavor-card p { color: var(--muted); }
+  .flavor-card.swap { animation: swap .5s ease; }
+  @keyframes swap { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
+  .flavor-photo { position: relative; border-radius: 50%; overflow: hidden; aspect-ratio: 1; box-shadow: 0 30px 70px rgba(44,31,22,.22); border: 8px solid #fff; }
+  .flavor-photo img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s cubic-bezier(.2,.7,.2,1); }
+  .flavor-photo:hover img { transform: scale(1.06) rotate(4deg); }
+  .note { margin-top: 18px; font-size: .84rem; color: var(--muted); }
+
+  /* Créations */
+  .creations-section { background: var(--cocoa); color: var(--cream); }
+  .creations-section .eyebrow { color: var(--gold-light); }
+  .creations-section .title em { color: var(--gold-light); }
+  .creations-section .lead { color: #cdbfa9; }
+  .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 52px; }
+  .card { border-radius: 22px; overflow: hidden; background: var(--cocoa-soft); transition: transform .4s, box-shadow .4s; }
+  .card:hover { transform: translateY(-8px); box-shadow: 0 26px 50px rgba(0,0,0,.35); }
+  .card .ph { aspect-ratio: 4/4.4; overflow: hidden; }
+  .card .ph img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s; }
+  .card:hover .ph img { transform: scale(1.08); }
+  .card .tx { padding: 20px 22px 24px; }
+  .card .n { font-family: "Cormorant Garamond", serif; font-style: italic; color: var(--gold-light); font-size: 1.1rem; }
+  .card h3 { font-size: 1.6rem; margin: 4px 0 6px; }
+  .card p { color: #cdbfa9; font-size: .9rem; }
+
+  /* L'atelier */
+  .atelier { position: relative; min-height: 560px; overflow: hidden; display: flex; align-items: center; color: #fff; }
+  .atelier img { position: absolute; inset: 0; width: 100%; height: 125%; object-fit: cover; object-position: 50% 30%; will-change: transform; }
+  .atelier::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(90deg, rgba(30,21,14,.88) 0%, rgba(30,21,14,.45) 55%, rgba(30,21,14,.1)); }
+  .atelier .tx { position: relative; z-index: 2; max-width: 560px; }
+  .atelier .eyebrow { color: var(--gold-light); }
+  .atelier .title em { color: var(--gold-light); }
+  .atelier p { color: #efe4d3; font-size: 1.05rem; }
+
+  /* Anniversaires */
+  .birthday { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .stack { position: relative; height: 560px; }
+  .stack .p { position: absolute; overflow: hidden; box-shadow: 0 30px 60px rgba(44,31,22,.22); border: 6px solid #fff; border-radius: 20px; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+  .stack .p img { width: 100%; height: 100%; object-fit: cover; }
+  .stack .p1 { left: 0; top: 0; width: 58%; height: 72%; transform: rotate(-4deg); }
+  .stack .p2 { right: 0; top: 12%; width: 50%; height: 60%; transform: rotate(5deg); }
+  .stack .p3 { left: 22%; bottom: 0; width: 46%; height: 44%; transform: rotate(-1deg); }
+  .stack:hover .p1 { transform: rotate(-7deg) translateX(-10px); }
+  .stack:hover .p2 { transform: rotate(8deg) translateX(10px); }
+  .steps { list-style: none; display: grid; gap: 12px; margin-top: 28px; counter-reset: s; }
+  .steps li { display: flex; gap: 16px; align-items: flex-start; padding: 16px 20px; border: 1px solid var(--line); border-radius: 16px; background: #fff; transition: transform .3s; }
+  .steps li:hover { transform: translateX(6px); }
+  .steps li::before { counter-increment: s; content: counter(s); flex: 0 0 32px; height: 32px; border-radius: 50%; background: var(--gold); color: #fff; display: grid; place-items: center; font-weight: 700; }
+  .steps strong { display: block; }
+  .steps small { color: var(--muted); }
+
+  /* Galerie */
+  .gallery { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 240px; gap: 14px; margin-top: 46px; }
+  .g { border-radius: 18px; overflow: hidden; position: relative; cursor: zoom-in; background: var(--line); }
+  .g img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s; }
+  .g:hover img { transform: scale(1.07); }
+  .g figcaption { position: absolute; left: 12px; bottom: 12px; background: rgba(252,248,241,.94); padding: 5px 14px; border-radius: 999px; font-size: .82rem; font-weight: 500; transform: translateY(8px); opacity: 0; transition: .4s; }
+  .g:hover figcaption { transform: none; opacity: 1; }
+  .g.tall { grid-row: span 2; }
+  .g.round { border-radius: 50%; }
+  .lightbox { position: fixed; inset: 0; z-index: 100; background: rgba(25,18,12,.94); display: grid; place-items: center; padding: 24px; opacity: 0; pointer-events: none; transition: opacity .3s; }
+  .lightbox.open { opacity: 1; pointer-events: auto; }
+  .lightbox img { max-height: 86vh; border-radius: 12px; transform: scale(.92); transition: transform .35s; }
+  .lightbox.open img { transform: none; }
+  .lightbox button { position: absolute; top: 16px; right: 20px; background: none; border: 0; color: #fff; font-size: 2.2rem; cursor: pointer; }
+
+  /* Commande */
+  .order-section { background: var(--cream); }
+  .order { display: grid; grid-template-columns: 1fr 1.1fr; gap: 56px; align-items: start; }
+  .info { list-style: none; display: grid; gap: 20px; margin-top: 30px; }
+  .info li { border-left: 2px solid var(--gold); padding-left: 16px; }
+  .info strong { display: block; font-size: .76rem; letter-spacing: .16em; text-transform: uppercase; }
+  .info span, .info a { color: var(--muted); }
+  .form { background: var(--cream-light); border: 1px solid var(--line); border-top: 6px solid var(--gold); border-radius: 26px; padding: 36px; display: grid; gap: 16px; }
+  .form h3 { font-size: 2rem; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  label { font-size: .8rem; font-weight: 600; display: grid; gap: 6px; }
+  input, select, textarea { font: inherit; padding: 13px 15px; border-radius: 12px; border: 1px solid var(--line); background: #fff; color: var(--ink); width: 100%; transition: border-color .2s, box-shadow .2s; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 4px rgba(140,107,62,.18); }
+  .form-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  footer { background: var(--cocoa); color: #cdbfa9; padding: 60px 0 34px; font-size: .9rem; }
+  .foot { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 32px; }
+  footer .brand b { color: var(--cream); }
+  footer h4 { color: var(--cream); font-size: .76rem; letter-spacing: .16em; text-transform: uppercase; margin-bottom: 12px; font-weight: 600; }
+  footer a { text-decoration: none; }
+  footer a:hover { color: #fff; }
+  .copy { margin-top: 44px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.12); font-size: .8rem; }
+
+  .wa-float { position: fixed; right: 18px; bottom: 18px; z-index: 60; padding: 13px 24px; border-radius: 999px; background: var(--wa); color: #fff; font-weight: 600; font-size: .9rem; text-decoration: none; box-shadow: 0 12px 28px rgba(0,0,0,.2); transition: transform .25s; }
+  .wa-float:hover { transform: translateY(-3px); }
+
+  .js .reveal { opacity: 0; transform: translateY(36px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); transition-delay: var(--d, 0s); }
+  .js .reveal.left { transform: translateX(-44px); }
+  .js .reveal.right { transform: translateX(44px); }
+  .js .reveal.zoom { transform: scale(.92); }
+  .js .reveal.in { opacity: 1; transform: none; }
+
+  @media (max-width: 980px) {
+    section { padding: 72px 0; }
+    .nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--cream-light); flex-direction: column; gap: 0; padding: 8px 16px 18px; border-bottom: 1px solid var(--line); }
+    .nav ul.open { display: flex; }
+    .nav ul a { display: block; padding: 12px 0; }
+    .menu-toggle { display: block; }
+    .nav .btn { display: none; }
+    .hero { padding-top: 28px; }
+    .hero-grid, .flavors, .birthday, .order { grid-template-columns: 1fr; gap: 48px; }
+    .hero-visual { width: min(380px, 84%); }
+    .tag.t1 { left: -14px; } .tag.t2 { right: -10px; }
+    .flavor-photo { max-width: 400px; width: 100%; justify-self: center; }
+    .cards { grid-template-columns: 1fr 1fr; }
+    .stack { height: 460px; }
+    .gallery { grid-template-columns: 1fr 1fr; grid-auto-rows: 180px; }
+    .atelier { min-height: 480px; }
+    .foot { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .brand b { font-size: 1.3rem; } .brand small { font-size: .56rem; letter-spacing: .1em; }
+    .cards, .row, .form-actions { grid-template-columns: 1fr; }
+    .stats { gap: 24px; }
+    .stack { height: 400px; }
+    .form { padding: 28px 22px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .anim, .js .reveal { opacity: 1; transform: none; }
+    .hero h1 .line span { transform: none; }
+    .plate { clip-path: none; }
+    .plate img { transform: none; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+<script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+
+<div class="demo-bar">Maquette de démonstration réalisée pour Pâtisserie de Luxe – adresse, horaires et prix à valider avec la pâtisserie</div>
+
+<header id="top">
+  <nav class="nav wrap" aria-label="Navigation principale">
+    <a href="#accueil" class="brand" aria-label="Pâtisserie de Luxe – accueil">
+      <img src="images/logo.jpg" alt="" width="46" height="46">
+      <span><b>Pâtisserie de Luxe</b><small>Entremets · Dakar</small></span>
+    </a>
+    <ul id="nav-links">
+      <li><a href="#saveurs">Nos saveurs</a></li>
+      <li><a href="#creations">Créations</a></li>
+      <li><a href="#anniversaires">Anniversaires</a></li>
+      <li><a href="#galerie">Galerie</a></li>
+      <li><a href="#commander">Commander</a></li>
+    </ul>
+    <a href="#commander" class="btn btn-cocoa">Commander un gâteau</a>
+    <button class="menu-toggle" aria-label="Ouvrir le menu" aria-controls="nav-links" aria-expanded="false">Menu</button>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" id="accueil">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow anim a1">Pâtisserie fine · Dakar</p>
+        <h1><span class="line"><span>Une part,</span></span><span class="line"><span>une saveur</span></span><span class="line"><span><em>du Sénégal</em></span></span></h1>
+        <p class="anim a3">Bouye, madd, sapotille, sidem, papaye : nos entremets réunissent les fruits d'ici dans un même gâteau, une saveur par part. À partager, à offrir, à fêter.</p>
+        <div class="hero-actions anim a4">
+          <a class="btn btn-cocoa" href="#commander">Commander un gâteau</a>
+          <a class="btn btn-line" href="#saveurs">Découvrir les saveurs</a>
+        </div>
+        <div class="stats anim a5">
+          <div><b data-count="22000">22 000</b><span>abonnés sur Facebook</span></div>
+          <div><b>100 %</b><span>de recommandations</span></div>
+          <div><b>8</b><span>saveurs par entremets</span></div>
+        </div>
+      </div>
+      <div class="hero-visual anim a1">
+        <div class="wheel" aria-hidden="true"></div>
+        <div class="plate"><img src="images/entremets-saveurs.jpg" alt="Entremets en parts aux saveurs bouye, madd, sapotille et pistache"></div>
+        <div class="tag t1"><b>Retrait au pas de porte</b>Commandez, passez récupérer</div>
+        <div class="tag t2"><b>Sur commande</b>pour toutes vos fêtes</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ribbon" aria-hidden="true">
+    <div class="ribbon-track">
+      <span>Bouye</span><span>Madd</span><span>Sapotille</span><span>Sidem</span><span>Papaye</span><span>Fraise</span><span>Chocolat</span><span>Passion</span>
+      <span>Bouye</span><span>Madd</span><span>Sapotille</span><span>Sidem</span><span>Papaye</span><span>Fraise</span><span>Chocolat</span><span>Passion</span>
+    </div>
+  </div>
+
+  <section id="saveurs">
+    <div class="wrap">
+      <p class="eyebrow reveal">Nos saveurs</p>
+      <h2 class="title reveal" style="--d:.1s">Les fruits d'ici, <em>en entremets</em></h2>
+      <p class="lead reveal" style="--d:.2s">Chaque part de nos entremets a son parfum, écrit au chocolat sur le dessus. Choisissez une saveur pour la découvrir.</p>
+      <div class="flavors">
+        <div class="reveal left" style="--d:.2s">
+          <div class="chips" role="tablist">
+            <button class="chip on" style="--c:#e9b98a" data-n="Bouye" data-t="Le fruit du baobab, doux et légèrement acidulé, le goût du jus que l'on boit dans tout le Sénégal.">
+              <i></i>Bouye</button>
+            <button class="chip" style="--c:var(--mango)" data-n="Madd" data-t="Le fruit du Saba, acidulé et sucré à la fois, une saveur qui rappelle l'enfance à beaucoup de Sénégalais.">
+              <i></i>Madd</button>
+            <button class="chip" style="--c:#c99b67" data-n="Sapotille" data-t="Une saveur ronde et caramélisée, tout en douceur.">
+              <i></i>Sapotille</button>
+            <button class="chip" style="--c:var(--cocoa-soft)" data-n="Sidem" data-t="Le jujube, au goût de datte et de pomme, travaillé en crème onctueuse.">
+              <i></i>Sidem</button>
+            <button class="chip" style="--c:var(--papaye)" data-n="Papaye" data-t="Le soleil en part : une saveur fruitée et parfumée, d'un orange éclatant.">
+              <i></i>Papaye</button>
+            <button class="chip" style="--c:var(--fraise)" data-n="Fraise" data-t="Un glaçage rose, des fraises fraîches posées sur le dessus.">
+              <i></i>Fraise</button>
+            <button class="chip" style="--c:var(--pistache)" data-n="Pistache" data-t="Une part verte, gourmande et délicate.">
+              <i></i>Pistache</button>
+            <button class="chip" style="--c:#f7d23e" data-n="Passion" data-t="Une saveur vive, avec ses graines croquantes sur le glaçage.">
+              <i></i>Passion</button>
+          </div>
+          <div class="flavor-card" id="flavor-card" style="--c:#e9b98a">
+            <h3 id="flavor-name">Bouye</h3>
+            <p id="flavor-text">Le fruit du baobab, doux et légèrement acidulé, le goût du jus que l'on boit dans tout le Sénégal.</p>
+          </div>
+          <p class="note">Les saveurs disponibles changent selon les jours : à confirmer avec la pâtisserie.</p>
+        </div>
+        <div class="flavor-photo reveal zoom" style="--d:.3s"><img src="images/entremets-sidem.jpg" alt="Entremets en parts, dont une part au sidem, une au chocolat et une aux noix de cajou" loading="lazy"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="creations-section" id="creations">
+    <div class="wrap">
+      <p class="eyebrow reveal">Nos créations</p>
+      <h2 class="title reveal" style="--d:.1s">Pour chaque <em>occasion</em></h2>
+      <p class="lead reveal" style="--d:.2s">Du grand entremets à partager à la petite part pour soi, tout est préparé dans notre atelier à Dakar.</p>
+      <div class="cards">
+        <article class="card reveal" style="--d:.1s"><div class="ph"><img src="images/entremets-fruits.jpg" alt="Entremets aux parts fraise, pistache, chocolat et mangue" loading="lazy"></div><div class="tx"><span class="n">01</span><h3>Entremets multi-saveurs</h3><p>Huit parts, huit parfums, pour que chacun choisisse le sien.</p></div></article>
+        <article class="card reveal" style="--d:.2s"><div class="ph"><img src="images/parts-individuelles.jpg" alt="Parts individuelles en boîtes transparentes" loading="lazy"></div><div class="tx"><span class="n">02</span><h3>Parts individuelles</h3><p>Emballées une à une, idéales pour un goûter ou un événement.</p></div></article>
+        <article class="card reveal" style="--d:.3s"><div class="ph"><img src="images/anniversaire-papa.jpg" alt="Gâteau au chocolat Joyeux anniversaire Papa" loading="lazy"></div><div class="tx"><span class="n">03</span><h3>Gâteaux d'anniversaire</h3><p>Personnalisés avec le message de votre choix.</p></div></article>
+        <article class="card reveal" style="--d:.4s"><div class="ph"><img src="images/gateau-vert.jpg" alt="Gâteau vert présenté dans sa boîte transparente" loading="lazy"></div><div class="tx"><span class="n">04</span><h3>Gâteaux de fête</h3><p>Livrés dans leur boîte, prêts à être offerts.</p></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="atelier" aria-label="L'atelier">
+    <img src="images/vitrine-entremets.jpg" alt="Une rangée d'entremets multi-saveurs sur le plan de travail de l'atelier" loading="lazy" id="atelier-img">
+    <div class="wrap">
+      <div class="tx reveal">
+        <p class="eyebrow">L'atelier</p>
+        <h2 class="title">Fait main, <em>part après part</em></h2>
+        <p>Chaque entremets est monté, glacé et décoré à la main, puis découpé et écrit au chocolat. Des dizaines de gâteaux sortent chaque jour de l'atelier.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="anniversaires">
+    <div class="wrap birthday">
+      <div class="stack reveal left">
+        <div class="p p1"><img src="images/anniversaire-janette.jpg" alt="Gâteau au chocolat Joyeux anniversaire Janette" loading="lazy"></div>
+        <div class="p p2"><img src="images/gateau-violet.jpg" alt="Gâteau d'anniversaire violet dans sa boîte" loading="lazy"></div>
+        <div class="p p3"><img src="images/entremets-praline.jpg" alt="Entremets praliné décoré" loading="lazy"></div>
+      </div>
+      <div>
+        <p class="eyebrow reveal">Anniversaires &amp; événements</p>
+        <h2 class="title reveal" style="--d:.1s">Votre message, <em>en chocolat</em></h2>
+        <p class="lead reveal" style="--d:.2s">Un anniversaire, un baptême, une réussite à fêter ? Dites-nous le prénom et le message : nous l'écrivons sur le gâteau.</p>
+        <ol class="steps">
+          <li class="reveal" style="--d:.25s"><div><strong>Vous choisissez</strong><small>Entremets, parts individuelles ou gâteau personnalisé, et vos saveurs.</small></div></li>
+          <li class="reveal" style="--d:.35s"><div><strong>Vous envoyez votre demande</strong><small>Par WhatsApp ou par e-mail, avec la date et le message à écrire.</small></div></li>
+          <li class="reveal" style="--d:.45s"><div><strong>Vous passez récupérer</strong><small>Retrait au pas de porte, le gâteau prêt dans sa boîte.</small></div></li>
+        </ol>
+        <a class="btn btn-gold reveal" style="--d:.55s;margin-top:28px" href="#commander">Commander mon gâteau</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="galerie" style="padding-top:0">
+    <div class="wrap">
+      <p class="eyebrow reveal">Galerie</p>
+      <h2 class="title reveal" style="--d:.1s">Sortis de <em>l'atelier</em></h2>
+      <div class="gallery">
+        <figure class="g tall reveal zoom"><img src="images/atelier-entremets.jpg" alt="Entremets alignés dans l'atelier" loading="lazy"><figcaption>L'atelier</figcaption></figure>
+        <figure class="g round reveal zoom" style="--d:.1s"><img src="images/parts-colorees.jpg" alt="Entremets aux parts colorées" loading="lazy"><figcaption>Parts colorées</figcaption></figure>
+        <figure class="g reveal zoom" style="--d:.2s"><img src="images/parts-pistache.jpg" alt="Parts individuelles à la pistache" loading="lazy"><figcaption>Parts pistache</figcaption></figure>
+        <figure class="g tall reveal zoom" style="--d:.3s"><img src="images/entremets-saveurs.jpg" alt="Entremets bouye, madd et sapotille" loading="lazy"><figcaption>Bouye, madd, sapotille</figcaption></figure>
+        <figure class="g reveal zoom" style="--d:.1s"><img src="images/entremets-praline.jpg" alt="Entremets praliné" loading="lazy"><figcaption>Praliné</figcaption></figure>
+        <figure class="g reveal zoom" style="--d:.2s"><img src="images/anniversaire-papa.jpg" alt="Gâteau d'anniversaire au chocolat" loading="lazy"><figcaption>Anniversaire</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="order-section" id="commander">
+    <div class="wrap order">
+      <div>
+        <p class="eyebrow reveal">Commander</p>
+        <h2 class="title reveal" style="--d:.1s">Votre gâteau, <em>sur commande</em></h2>
+        <p class="lead reveal" style="--d:.2s">Envoyez votre demande, nous vous confirmons la disponibilité et le prix. Vous pouvez aussi appeler directement.</p>
+        <ul class="info">
+          <li class="reveal" style="--d:.25s"><strong>Téléphone &amp; WhatsApp</strong><a href="tel:+221707137070">70 713 70 70</a></li>
+          <li class="reveal" style="--d:.35s"><strong>E-mail</strong><a href="mailto:patisserie2luxe@gmail.com">patisserie2luxe@gmail.com</a></li>
+          <li class="reveal" style="--d:.45s"><strong>Retrait</strong><span>Au pas de porte, à Dakar (adresse à confirmer)</span></li>
+          <li class="reveal" style="--d:.55s"><strong>Horaires et prix</strong><span>À confirmer avec la pâtisserie</span></li>
+        </ul>
+      </div>
+      <form class="form reveal right" id="order-form">
+        <h3>Ma commande</h3>
+        <label>Je souhaite
+          <select name="produit">
+            <option>Un entremets multi-saveurs</option>
+            <option>Des parts individuelles</option>
+            <option>Un gâteau d'anniversaire personnalisé</option>
+            <option>Un gâteau pour un événement</option>
+          </select>
+        </label>
+        <div class="row">
+          <label>Nom<input name="nom" required placeholder="Votre nom"></label>
+          <label>Nombre de personnes<input name="personnes" type="number" min="1" value="8"></label>
+        </div>
+        <div class="row">
+          <label>Date de retrait<input type="date" name="date" required></label>
+          <label>Saveurs préférées<input name="saveurs" placeholder="Bouye, madd, chocolat…"></label>
+        </div>
+        <label>Message à écrire sur le gâteau (facultatif)<textarea name="message" rows="3" placeholder="Joyeux anniversaire Awa…"></textarea></label>
+        <div class="form-actions">
+          <button class="btn btn-wa" type="submit" data-via="wa">Envoyer sur WhatsApp</button>
+          <button class="btn btn-cocoa" type="submit" data-via="mail">Envoyer par e-mail</button>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <a href="#accueil" class="brand"><img src="images/logo.jpg" alt="" width="46" height="46"><span><b>Pâtisserie de Luxe</b><small>Entremets · Dakar</small></span></a>
+      <p style="margin-top:16px;max-width:320px">Entremets multi-saveurs, parts individuelles et gâteaux personnalisés, aux saveurs du Sénégal.</p>
+    </div>
+    <div>
+      <h4>Commandes</h4>
+      <p><a href="tel:+221707137070">70 713 70 70</a></p>
+      <p><a href="mailto:patisserie2luxe@gmail.com">patisserie2luxe@gmail.com</a></p>
+    </div>
+    <div>
+      <h4>Suivez-nous</h4>
+      <p><a href="https://www.facebook.com/Patisserie5.0/" target="_blank" rel="noopener">Facebook</a></p>
+      <p><a href="https://www.instagram.com/patisserie2luxe/" target="_blank" rel="noopener">Instagram</a></p>
+      <p><a href="https://wa.me/221707137070" target="_blank" rel="noopener">WhatsApp</a></p>
+    </div>
+  </div>
+  <p class="wrap copy">© <span id="year"></span> Pâtisserie de Luxe · Dakar</p>
+</footer>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo agrandie">
+  <button aria-label="Fermer">×</button>
+  <img alt="">
+</div>
+
+<a class="wa-float" href="https://wa.me/221707137070" target="_blank" rel="noopener">WhatsApp</a>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  const header = document.getElementById('top');
+  const atelier = document.getElementById('atelier-img');
+  const onScroll = () => {
+    header.classList.toggle('scrolled', scrollY > 20);
+    const r = atelier.parentElement.getBoundingClientRect();
+    if (r.bottom > 0 && r.top < innerHeight) atelier.style.transform = `translateY(${(r.top / innerHeight) * -70 - 20}px)`;
+  };
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  const toggle = document.querySelector('.menu-toggle');
+  const links = document.getElementById('nav-links');
+  toggle.addEventListener('click', () => toggle.setAttribute('aria-expanded', links.classList.toggle('open')));
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+
+  const io = new IntersectionObserver(entries => entries.forEach(en => {
+    if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+  }), { threshold: .12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Compteur d'abonnés
+  const counter = document.querySelector('[data-count]');
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const end = +counter.dataset.count, t0 = performance.now() + 900;
+    const step = t => { const p = Math.min(Math.max((t - t0) / 1600, 0), 1); counter.textContent = Math.round(end * (1 - Math.pow(1 - p, 3))).toLocaleString('fr-FR'); if (p < 1) requestAnimationFrame(step); };
+    counter.textContent = '0'; requestAnimationFrame(step);
+  }
+
+  // Saveurs
+  const card = document.getElementById('flavor-card');
+  document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
+    document.querySelectorAll('.chip').forEach(x => x.classList.toggle('on', x === c));
+    card.style.setProperty('--c', getComputedStyle(c).getPropertyValue('--c'));
+    document.getElementById('flavor-name').textContent = c.dataset.n;
+    document.getElementById('flavor-text').textContent = c.dataset.t;
+    card.classList.remove('swap'); void card.offsetWidth; card.classList.add('swap');
+  }));
+
+  // Galerie
+  const lb = document.getElementById('lightbox');
+  const lbImg = lb.querySelector('img');
+  document.querySelectorAll('.g').forEach(fig => fig.addEventListener('click', () => {
+    const img = fig.querySelector('img');
+    lbImg.src = img.src; lbImg.alt = img.alt; lb.classList.add('open');
+  }));
+  const closeLb = () => lb.classList.remove('open');
+  lb.addEventListener('click', e => { if (e.target !== lbImg) closeLb(); });
+  addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
+
+  // Commande par WhatsApp ou e-mail
+  document.querySelector('input[type="date"]').min = new Date().toISOString().split('T')[0];
+  document.getElementById('order-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const f = new FormData(e.target);
+    const date = new Date(f.get('date')).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+    let msg = `Bonjour Pâtisserie de Luxe, je souhaite commander : ${f.get('produit')}.\nNom : ${f.get('nom')}\nPour : ${f.get('personnes')} personnes\nRetrait le : ${date}`;
+    if (f.get('saveurs')) msg += `\nSaveurs : ${f.get('saveurs')}`;
+    if (f.get('message')) msg += `\nMessage sur le gâteau : ${f.get('message')}`;
+    if (e.submitter && e.submitter.dataset.via === 'mail') {
+      location.href = 'mailto:patisserie2luxe@gmail.com?subject=' + encodeURIComponent('Commande – ' + f.get('nom')) + '&body=' + encodeURIComponent(msg);
+    } else {
+      window.open('https://wa.me/221707137070?text=' + encodeURIComponent(msg), '_blank');
+    }
+  });
+</script>
+</body>
+</html>
